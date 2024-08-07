@@ -10,4 +10,9 @@ export class AuthController {
   localSignup(@Body() dto: LocalSignupDto) {
     return this.authService.localSignup(dto);
   }
+
+  @Post('login')
+  localLogin(@Body() dto: LocalSignupDto) {
+    return this.authService.localLogin(dto);
+  }
 }

@@ -5,6 +5,7 @@ import { User } from 'src/entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { HttpModule } from '@nestjs/axios';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -20,5 +21,6 @@ import { HttpModule } from '@nestjs/axios';
   ],
   providers: [UserService],
   exports: [UserService],
+  controllers: [UserController],
 })
 export class UserModule {}

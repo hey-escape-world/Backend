@@ -9,6 +9,8 @@ import { User } from './entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { AccountModule } from './account/account.module';
 import { UserModule } from './user/user.module';
+import * as redisStore from 'cache-manager-ioredis';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -16,6 +18,13 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeorm],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
+      ttl: 180000, // milliseconds
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
