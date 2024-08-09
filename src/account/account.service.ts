@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AppService } from 'src/app.service';
 import { randomNum } from 'src/utils/random-nickname';
+import { CheckCertificationDto } from './dto/check-certification.dto';
 
 @Injectable()
 export class AccountService {
@@ -48,7 +49,7 @@ export class AccountService {
 
   async checkCertification(
     phone: string,
-    certificationNumber: number,
+    dto: CheckCertificationDto,
   ): Promise<boolean> {
     try {
       const cacheCertificationNumber = await this.appService.getCache<number>(
@@ -57,7 +58,22 @@ export class AccountService {
       if (!cacheCertificationNumber) {
         throw new HttpException('Certification number does not exist', 400);
       }
-      return cacheCertificationNumber === certificationNumber ? true : false;
+      return cacheCertificationNumber === dto.certification_num ? true : false;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('Internal server error', 500);
+    }
+  }
+
+  async updatePassword(phone: string, password: string): Promise<boolean> {
+    try {
+      const account = await this.findUserByPhone(phone);
+      if (!account) {
+        throw new HttpException('Phone number does not exist', 400);
+      }
+      account.password = password;
+      await this.accountRepository.save(account);
+      return true;
     } catch (error) {
       console.log(error);
       throw new HttpException('Internal server error', 500);

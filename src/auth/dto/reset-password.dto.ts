@@ -1,9 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class LocalLoginDto {
+export class ResetPasswordDto {
   @IsString()
   phone: string;
-
-  @IsString()
-  password: string;
 }
