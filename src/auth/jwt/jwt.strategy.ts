@@ -25,6 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new HttpException('not find user', 400);
     }
-    return user;
+    return payload;
   }
 }

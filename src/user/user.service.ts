@@ -16,7 +16,7 @@ export class UserService {
   async validateUser(payload: any): Promise<any> {
     const result = await this.userRepository
       .createQueryBuilder('user')
-      .where({ user_id: payload.user.user_id })
+      .where({ user_id: payload.user_id })
       .select('*')
       .getRawOne();
     return result;

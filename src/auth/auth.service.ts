@@ -105,6 +105,7 @@ export class AuthService {
 
   async changePassword(dto: ChangePasswordDto, user: Payload) {
     try {
+      console.log(user);
       const saltOrRounds = 10;
       const password = dto.password;
       const hash = await bcrypt.hash(password, saltOrRounds);
