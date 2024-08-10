@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class CheckCertificationDto {
-  @IsString()
+  @IsNumber()
   certification_num: number;
 }

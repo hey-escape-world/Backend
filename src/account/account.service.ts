@@ -79,4 +79,24 @@ export class AccountService {
       throw new HttpException('Internal server error', 500);
     }
   }
+
+  async updatePasswordByAccountId(
+    account_id: number,
+    password: string,
+  ): Promise<boolean> {
+    try {
+      const account = await this.accountRepository.findOne({
+        where: { account_id },
+      });
+      if (!account) {
+        throw new HttpException('Account does not exist', 400);
+      }
+      account.password = password;
+      await this.accountRepository.save(account);
+      return true;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('Internal server error', 500);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AccountService } from './account.service';
-import { CheckCertificationDto } from './dto/check-phone.dto';
+import { CheckCertificationDto } from './dto/check-certification.dto';
 
 @Controller('account')
 export class AccountController {
@@ -16,6 +16,6 @@ export class AccountController {
     @Body() dto: CheckCertificationDto,
     @Query('phone') phone: string,
   ) {
-    return this.accountService.checkCertification(phone, dto.certificationNum);
+    return this.accountService.checkCertification(phone, dto);
   }
 }

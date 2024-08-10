@@ -5,11 +5,13 @@ import { Account } from 'src/entities/account.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
 import { AccountController } from './account.controller';
+import { AppModule } from 'src/app.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Account]),
     forwardRef(() => AuthModule),
+    forwardRef(() => AppModule),
     UserModule,
   ],
   providers: [AccountService],

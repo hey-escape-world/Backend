@@ -20,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
+    console.log(payload, 'payload');
     const user = await this.userService.validateUser(payload);
     if (!user) {
       throw new HttpException('not find user', 400);

@@ -6,4 +6,5 @@ export interface Payload {
   gender: string;
   email: string;
   providerType: string;
+  account_id: number;
 }

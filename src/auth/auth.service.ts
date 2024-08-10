@@ -1,4 +1,3 @@
-import { ProviderType } from './../utils/provider.type';
 import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
@@ -7,6 +6,8 @@ import { AccountService } from 'src/account/account.service';
 import * as bcrypt from 'bcrypt';
 import { randomNickname } from 'src/utils/random-nickname';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { Payload } from 'src/common/interface/user.interface';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
   ) {}
 
   generatePassword(): string {
+    const length = 12;
     let characters = this.lowercase;
     characters += this.uppercase;
     characters += this.numbers;
@@ -74,8 +76,9 @@ export class AuthService {
       const user = await this.userService.findUserByUserId(account.user_id);
       const payload = {
         account_id: account.account_id,
-        user: user,
+        ...user,
       };
+      console.log(payload);
       return {
         access_token: this.jwtService.sign(payload, { expiresIn: '1d' }),
       };
@@ -94,6 +97,22 @@ export class AuthService {
       const hash = await bcrypt.hash(password, saltOrRounds);
       await this.accountService.updatePassword(dto.phone, hash);
       return { password: newPassword };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('Internal server error', 500);
+    }
+  }
+
+  async changePassword(dto: ChangePasswordDto, user: Payload) {
+    try {
+      const saltOrRounds = 10;
+      const password = dto.password;
+      const hash = await bcrypt.hash(password, saltOrRounds);
+      await this.accountService.updatePasswordByAccountId(
+        user.account_id,
+        hash,
+      );
+      return true;
     } catch (error) {
       console.log(error);
       throw new HttpException('Internal server error', 500);
